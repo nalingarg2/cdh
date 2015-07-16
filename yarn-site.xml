@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value>[ResourceManager_FQDN]</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.resource-tracker.address</name>
+    <value>[ResourceManager_FQDN]:8031</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.address</name>
+    <value>[ResourceManager_FQDN]:8032</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.scheduler.address</name>
+    <value>[ResourceManager_FQDN]:8030</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.admin.address</name>
+    <value>[ResourceManager_FQDN]:8033</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.webapp.address</name>
+    <value>[ResourceManager_FQDN]:8088</value>
+  </property>
+  <property>
+    <description>Classpath for typical applications.</description>
+    <name>yarn.application.classpath</name>
+    <value>
+      $HADOOP_CONF_DIR,
+      $HADOOP_COMMON_HOME/*,$HADOOP_COMMON_HOME/lib/*,
+      $HADOOP_HDFS_HOME/*,$HADOOP_HDFS_HOME/lib/*,
+      $HADOOP_MAPRED_HOME/*,$HADOOP_MAPRED_HOME/lib/*,
+      $HADOOP_YARN_HOME/*,$HADOOP_YARN_HOME/lib/*
+    </value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
+    <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.local-dirs</name>
+    <value>file:///data/1/yarn/local,file:///data/2/yarn/local,file:///data/3/yarn/local,file:///data/4/yarn/local</value>
+    <description>URIs of the dirs where NodeManagers stores its localized files</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.log-dirs</name>
+    <value>file:///data/1/yarn/logs,file:///data/2/yarn/logs,file:///data/3/yarn/logs,file:///data/4/yarn/logs</value>
+    <description>URIs of the dirs where NodeManagers stores container log files</description>
+  </property>
+  <property>
+    <name>yarn.log.aggregation.enable</name>
+    <value>true</value>
+  </property>
+  <property>
+    <description>Where to aggregate logs</description>
+    <name>yarn.nodemanager.remote-app-log-dir</name>
+    <value>hdfs://[NameNode_FQDN]:8020/var/log/hadoop-yarn/apps</value>
+    <description>URI of the dir where logs are aggregated</description>
+  </property>
+</configuration>
