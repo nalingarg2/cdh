@@ -11,6 +11,7 @@ RUN echo "timeout=60" >> /etc/yum.conf
 USER root
 
 # install dev tools
+RUN echo running dev tools
 RUN yum clean all; \
     rpm --rebuilddb; \
     yum install -y curl which tar sudo openssh-server openssh-clients rsync
@@ -20,15 +21,35 @@ RUN yum update -y libselinux
 RUN yum install -y tar git curl bind-utils unzip
 
  java
-RUN curl -LO 'http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.rpm' -H 'Cookie: oraclelicense=accept-securebackup-cookie'
-RUN rpm -i jdk-7u71-linux-x64.rpm
-RUN rm jdk-7u71-linux-x64.rpm
+RUN echo install java 
+RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u45-b18/jdk-7u45-linux-x64.rpm -O jdk-7u45-linux-x64.rpm
+RUN rpm -i jdk-7u45-linux-x64.rpm
+RUN rm jdk-7u45-linux-x64.rpm
+RUN alternatives --install /usr/bin/java java /usr/java/jdk1.7.0_45/bin/java 200000
 
-ENV JAVA_HOME /usr/java/default
+ENV JAVA_HOME /usr/java/jdk1.7.0_45/
 ENV PATH $PATH:$JAVA_HOME/bin
 
 #Namenode install
-RUN sudo yum install -y hadoop-hdfs-namenode
+RUN yum install -y hadoop-hdfs-namenode
+
+#make directories
+RUN mkdir -p /data/1/dfs/{dn,nn} 
+RUN mkdir -p /data/1/yarn/{local,logs} 
+RUN chown -R hdfs:hdfs /data/1/dfs 
+RUN chown -R yarn:yarn /data/1/yarn 
+ 
+
+RUN mkdir /tmp
+RUN chown -R hdfs:hadoop /tmp
+RUN chmod 1777 -R /tmp
+
+RUN mkdir /user/history
+RUN chown -R mapred:hadoop /user/history
+RUN chmod 1777 -R /user/history
+
+RUN mkdir /var/log/hadoop-yarn
+RUN chown yarn:mapred /var/log/hadoop-yarn
 
 #hadoop
 
@@ -49,7 +70,7 @@ RUN mkdir $HADOOP_PREFIX/input
 RUN cp $HADOOP_PREFIX/etc/hadoop/*.xml $HADOOP_PREFIX/input
 
 # pseudo distributed
-ADD core-site.xml.template $HADOOP_PREFIX/etc/hadoop/core-site.xml.template
+ADD core-site.xml /etc/hadoop/core-site.xml.template
 RUN sed s/HOSTNAME/localhost/ /usr/local/hadoop/etc/hadoop/core-site.xml.template > /usr/local/hadoop/etc/hadoop/core-site.xml
 ADD hdfs-site.xml $HADOOP_PREFIX/etc/hadoop/hdfs-site.xml
 
