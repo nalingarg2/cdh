@@ -64,7 +64,10 @@ ADD core-site.xml /etc/hadoop/conf/
 ADD mapred-site.xml /etc/hadoop/conf/
 ADD yarn-site.xml /etc/hadoop/conf/
 
-RUN su -u hdfs hadoop namenode -format
+USER hdfs
+RUN hadoop namenode -format
+
+USER root
 
 RUN service hadoop-hdfs-namenode start
 
