@@ -63,6 +63,9 @@ RUN rm -rf /etc/hadoop/conf/yarn-site.xml
 ADD core-site.xml /etc/hadoop/conf/
 ADD mapred-site.xml /etc/hadoop/conf/
 ADD yarn-site.xml /etc/hadoop/conf/
+ADD hdfs-site.xml /etc/hadoop/conf/
+
+sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/core-site.xml
 
 USER hdfs
 RUN hadoop namenode -format
