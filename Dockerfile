@@ -41,7 +41,7 @@ RUN chown -R hdfs:hdfs /data/1/dfs
 RUN chown -R yarn:yarn /data/1/yarn 
  
 
-RUN mkdir /tmp
+RUN mkdir -p /tmp
 RUN chown -R hdfs:hadoop /tmp
 RUN chmod 1777 -R /tmp
 
