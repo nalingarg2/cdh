@@ -45,11 +45,11 @@ RUN mkdir -p /tmp
 RUN chown -R hdfs:hadoop /tmp
 RUN chmod 1777 -R /tmp
 
-RUN mkdir /user/history
+RUN mkdir -p /user/history
 RUN chown -R mapred:hadoop /user/history
 RUN chmod 1777 -R /user/history
 
-RUN mkdir /var/log/hadoop-yarn
+RUN mkdir -p /var/log/hadoop-yarn
 RUN chown yarn:mapred /var/log/hadoop-yarn
 
 ADD hadoop-env.sh.repo /etc/hadoop/conf/
