@@ -20,7 +20,7 @@ RUN yum update -y libselinux
 
 RUN yum install -y tar git curl bind-utils unzip
 
- java
+#java
 RUN echo install java 
 RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u45-b18/jdk-7u45-linux-x64.rpm -O jdk-7u45-linux-x64.rpm
 RUN rpm -i jdk-7u45-linux-x64.rpm
@@ -51,33 +51,19 @@ RUN chmod 1777 -R /user/history
 RUN mkdir /var/log/hadoop-yarn
 RUN chown yarn:mapred /var/log/hadoop-yarn
 
-#hadoop
-
-
-ENV HADOOP_PREFIX /usr/local/hadoop
-ENV HADOOP_COMMON_HOME /usr/local/hadoop
-ENV HADOOP_HDFS_HOME /usr/local/hadoop
-ENV HADOOP_MAPRED_HOME /usr/local/hadoop
-ENV HADOOP_YARN_HOME /usr/local/hadoop
-ENV HADOOP_CONF_DIR /usr/local/hadoop/etc/hadoop
-ENV YARN_CONF_DIR $HADOOP_PREFIX/etc/hadoop
-
-RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/java/default\nexport HADOOP_PREFIX=/usr/local/hadoop\nexport HADOOP_HOME=/usr/local/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
-RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop/:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
-#RUN . $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
-
-RUN mkdir $HADOOP_PREFIX/input
-RUN cp $HADOOP_PREFIX/etc/hadoop/*.xml $HADOOP_PREFIX/input
+ADD hadoop-env.sh.repo /etc/hadoop/conf/
 
 # pseudo distributed
-ADD core-site.xml /etc/hadoop/core-site.xml.template
-RUN sed s/HOSTNAME/localhost/ /usr/local/hadoop/etc/hadoop/core-site.xml.template > /usr/local/hadoop/etc/hadoop/core-site.xml
-ADD hdfs-site.xml $HADOOP_PREFIX/etc/hadoop/hdfs-site.xml
 
-ADD mapred-site.xml $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
-ADD yarn-site.xml $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
+RUN rm -rf /etc/hadoop/conf/core-site.xml
+RUN rm -rf /etc/hadoop/conf/hdfs-site.xml
+RUN rm -rf /etc/hadoop/conf/yarn-site.xml
 
-RUN $HADOOP_PREFIX/bin/hdfs namenode -format
+ADD core-site.xml /etc/hadoop/conf/
+ADD mapred-site.xml /etc/hadoop/conf/
+ADD yarn-site.xml /etc/hadoop/conf/
+
+RUN su -u hdfs hadoop namenode -format
 
 RUN service hadoop-hdfs-namenode start
 
