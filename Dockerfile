@@ -52,9 +52,9 @@ RUN chmod 1777 -R /user/history
 RUN mkdir -p /var/log/hadoop-yarn
 RUN chown yarn:mapred /var/log/hadoop-yarn
 
-ADD hadoop-env.sh.repo /etc/hadoop/conf/
+ADD hadoop-env.sh /etc/hadoop/conf/
 
-# pseudo distributed
+# Fully distributed
 
 RUN rm -rf /etc/hadoop/conf/core-site.xml
 RUN rm -rf /etc/hadoop/conf/hdfs-site.xml
