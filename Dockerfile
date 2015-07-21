@@ -22,6 +22,7 @@ RUN yum install -y tar git curl bind-utils unzip
 
 #java
 RUN echo install java 
+RUN yum install -y wget
 RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u45-b18/jdk-7u45-linux-x64.rpm -O jdk-7u45-linux-x64.rpm
 RUN rpm -i jdk-7u45-linux-x64.rpm
 RUN rm jdk-7u45-linux-x64.rpm
