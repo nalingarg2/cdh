@@ -67,7 +67,9 @@ ADD hdfs-site.xml /etc/hadoop/conf/
 
 RUN sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/core-site.xml
 RUN sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/hdfs-site.xml
-RUN echo `ifconfig eth0 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`  namenode| cat >> /etc/hosts
+ADD ipresolv.sh /home/
+RUN chmod 777 /home/ipresolv.sh
+RUN ./home/ipresolv.sh
 
 USER hdfs
 RUN hadoop namenode -format
