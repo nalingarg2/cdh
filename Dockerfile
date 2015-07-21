@@ -65,7 +65,9 @@ ADD mapred-site.xml /etc/hadoop/conf/
 ADD yarn-site.xml /etc/hadoop/conf/
 ADD hdfs-site.xml /etc/hadoop/conf/
 
-sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/core-site.xml
+RUN sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/core-site.xml
+RUN sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/hdfs-site.xml
+RUN echo `ifconfig eth0 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`  namenode| cat >> /etc/hosts
 
 USER hdfs
 RUN hadoop namenode -format
