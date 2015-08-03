@@ -67,6 +67,9 @@ ADD hdfs-site.xml /etc/hadoop/conf/
 
 RUN sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/core-site.xml
 RUN sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/hdfs-site.xml
+RUN sed -i 's/\[JobHistoryServer_FQDN\]/resourcemanager/g' /etc/hadoop/conf/mapred-site.xml
+RUN sed -i 's/\[ResourceManager_FQDN\]/resourcemanager/g' /etc/hadoop/conf/yarn-site.xml
+
 ADD ipresolv.sh /home/
 RUN chmod 777 /home/ipresolv.sh
 RUN ./home/ipresolv.sh
