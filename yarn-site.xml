@@ -46,12 +46,12 @@
   </property>
   <property>
     <name>yarn.nodemanager.local-dirs</name>
-    <value>file:///data/1/yarn/local,file:///data/2/yarn/local,file:///data/3/yarn/local,file:///data/4/yarn/local</value>
+    <value>file:///data/1/yarn/local</value>
     <description>URIs of the dirs where NodeManagers stores its localized files</description>
   </property>
   <property>
     <name>yarn.nodemanager.log-dirs</name>
-    <value>file:///data/1/yarn/logs,file:///data/2/yarn/logs,file:///data/3/yarn/logs,file:///data/4/yarn/logs</value>
+    <value>file:///data/1/yarn/logs</value>
     <description>URIs of the dirs where NodeManagers stores container log files</description>
   </property>
   <property>
