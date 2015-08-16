@@ -75,11 +75,11 @@ RUN chmod 777 /home/ipresolv.sh
 RUN ./home/ipresolv.sh
 
 USER hdfs
-RUN hadoop namenode -format
+#RUN hadoop namenode -format
 
 USER root
 
-RUN service hadoop-hdfs-namenode start
+#RUN service hadoop-hdfs-namenode start
 
 
 # Hdfs ports
