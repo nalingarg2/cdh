@@ -31,9 +31,9 @@ RUN alternatives --install /usr/bin/java java /usr/java/jdk1.7.0_45/bin/java 200
 ENV JAVA_HOME /usr/java/jdk1.7.0_45/
 ENV PATH $PATH:$JAVA_HOME/bin
 
-#Secondary NM install
-RUN yum clean all; 
-RUN yum install -y hadoop-hdfs-secondarynamenode
+#Resource maanger and JHS install
+RUN yum clean all
+RUN yum install -y hadoop-yarn-resourcemanager hadoop-mapreduce-historyserver
 
 #make directories
 RUN mkdir -p /data/1/dfs/{dn,nn} 
@@ -78,7 +78,9 @@ RUN ./home/ipresolv.sh
 
 USER root
 
-RUN service hadoop-hdfs-secondarynamenode start
+RUN service hadoop-yarn-resourcemanager start
+RUN service hadoop-mapreduce-historyserver start
+
 
 # Hdfs ports
 EXPOSE 50010 50020 50070 50075 50090
