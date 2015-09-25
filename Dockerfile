@@ -31,9 +31,8 @@ RUN alternatives --install /usr/bin/java java /usr/java/jdk1.7.0_45/bin/java 200
 ENV JAVA_HOME /usr/java/jdk1.7.0_45/
 ENV PATH $PATH:$JAVA_HOME/bin
 
-#Resource maanger and JHS install
-RUN yum clean all
-RUN yum install -y hadoop-yarn-resourcemanager hadoop-mapreduce-historyserver
+#Namenode install
+RUN yum install -y hadoop-hdfs-namenode
 
 #make directories
 RUN mkdir -p /data/1/dfs/{dn,nn} 
@@ -71,18 +70,19 @@ RUN sed -i 's/\[NameNode_FQDN\]/namenode/g' /etc/hadoop/conf/hdfs-site.xml
 RUN sed -i 's/\[JobHistoryServer_FQDN\]/resourcemanager/g' /etc/hadoop/conf/mapred-site.xml
 RUN sed -i 's/\[ResourceManager_FQDN\]/resourcemanager/g' /etc/hadoop/conf/yarn-site.xml
 
-
 ADD ipresolv.sh /home/
 RUN chmod 777 /home/ipresolv.sh
 RUN ./home/ipresolv.sh
 
+USER hdfs
+#RUN hadoop namenode -format
+
 USER root
 
-RUN service hadoop-yarn-resourcemanager start
-RUN service hadoop-mapreduce-historyserver start
+#RUN service hadoop-hdfs-namenode start
 
 
-# Hdfs ports
+#Hdfs ports
 EXPOSE 50010 50020 50070 50075 50090 1004 1006 50745 8020 8022 50470 50090
 
 #Yarn ports
