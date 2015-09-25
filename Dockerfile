@@ -81,6 +81,7 @@ RUN service hadoop-hdfs-datanode start
 RUN service hadoop-yarn-nodemanager start
 
 
+
 # Hdfs ports
 EXPOSE 50010 50020 50070 50075 50090 1004 1006 50745 8020 8022 50470 50090
 EXPOSE 19888
